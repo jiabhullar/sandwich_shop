@@ -13,7 +13,6 @@ class App extends StatelessWidget {
       title: 'Sandwich Shop App',
       home: Scaffold(
         appBar: AppBar(title: const Text('Sandwich Counter')),
-        // The bit that you need to update starts from here
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -35,11 +34,32 @@ class App extends StatelessWidget {
             ],
           ),
         ),
-        // The bit that you need to update ends here
       ),
     );
   }
 }
+
+
+class OrderScreen extends StatefulWidget {
+  final int maxQuantity;
+
+  const OrderScreen({super.key, this.maxQuantity = 10});
+
+  @override
+  State<OrderScreen> createState() {
+    return _OrderScreenState();
+  }
+}
+
+class _OrderScreenState extends State<OrderScreen> {
+  int _quantity = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
 
 class OrderItemDisplay extends StatelessWidget {
   final int quantity;
@@ -52,3 +72,4 @@ class OrderItemDisplay extends StatelessWidget {
     return Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}');
   }
 }
+
