@@ -4,6 +4,7 @@ void main() {
   runApp(const App());
 }
 
+// Updated App widget to use OrderScreen as home
 class App extends StatelessWidget {
   const App({super.key});
 
@@ -16,6 +17,7 @@ class App extends StatelessWidget {
   }
 }
 
+// StatefulWidget to manage sandwich quantity
 class OrderScreen extends StatefulWidget {
   final int maxQuantity;
 
@@ -27,8 +29,23 @@ class OrderScreen extends StatefulWidget {
   }
 }
 
+// State class for OrderScreen
 class _OrderScreenState extends State<OrderScreen> {
   int _quantity = 0;
+
+  // Helper method to increase quantity
+  void _increaseQuantity() {
+    if (_quantity < widget.maxQuantity) {
+      setState(() => _quantity++);
+    }
+  }
+
+  // Helper method to decrease quantity
+  void _decreaseQuantity() {
+    if (_quantity > 0) {
+      setState(() => _quantity--);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +65,12 @@ class _OrderScreenState extends State<OrderScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () => print('Add button pressed!'),
+                  onPressed: _increaseQuantity,
                   child: const Text('Add'),
                 ),
+                const SizedBox(width: 10), // optional spacing
                 ElevatedButton(
-                  onPressed: () => print('Remove button pressed!'),
+                  onPressed: _decreaseQuantity,
                   child: const Text('Remove'),
                 ),
               ],
@@ -64,6 +82,7 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 }
 
+// Stateless widget to display the sandwich order
 class OrderItemDisplay extends StatelessWidget {
   final int quantity;
   final String itemType;
