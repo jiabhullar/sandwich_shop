@@ -22,7 +22,9 @@ class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key, this.maxQuantity = 10});
 
   @override
-  State<OrderScreen> createState() => _OrderScreenState();
+  State<OrderScreen> createState() {
+    return _OrderScreenState();
+  }
 }
 
 class _OrderScreenState extends State<OrderScreen> {
@@ -84,65 +86,25 @@ class _OrderScreenState extends State<OrderScreen> {
             ),
             const SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                StyledButton(
-                  text: 'Add',
-                  icon: Icons.add,
-                  onPressed: _quantity < widget.maxQuantity ? _increaseQuantity : null,
-                  backgroundColor: Colors.green,
+                ElevatedButton(
+                  onPressed: _increaseQuantity,
+                  child: const Text('Add'),
                 ),
-                StyledButton(
-                  text: 'Remove',
-                  icon: Icons.remove,
-                  onPressed: _quantity > 0 ? _decreaseQuantity : null,
-                  backgroundColor: Colors.red,
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: _decreaseQuantity,
+                  child: const Text('Remove'),
                 ),
               ],
             ),
             const SizedBox(height: 10),
             // Display the note if not empty
             if (_note.isNotEmpty)
-              Text(
-                'Note: $_note',
-                style: const TextStyle(fontStyle: FontStyle.italic),
-              ),
+              Text('Note: $_note', style: const TextStyle(fontStyle: FontStyle.italic)),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class StyledButton extends StatelessWidget {
-  final String text;
-  final VoidCallback? onPressed;
-  final IconData? icon;
-  final Color backgroundColor;
-  final Color foregroundColor;
-
-  const StyledButton({
-    super.key,
-    required this.text,
-    required this.onPressed,
-    this.icon,
-    this.backgroundColor = Colors.pink,
-    this.foregroundColor = Colors.white,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: icon != null ? Icon(icon, size: 18) : const SizedBox.shrink(),
-      label: Text(
-        text,
-        style: const TextStyle(fontWeight: FontWeight.bold),
-      ),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        foregroundColor: foregroundColor,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
     );
   }
