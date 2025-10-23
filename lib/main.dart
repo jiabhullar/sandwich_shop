@@ -29,18 +29,30 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   int _quantity = 0;
+  String _note = ''; // Track the custom note
+  final TextEditingController _noteController = TextEditingController();
 
-  // Helper methods for buttons
+  // Increase quantity
   void _increaseQuantity() {
     if (_quantity < widget.maxQuantity) {
-      setState(() => _quantity++);
+      setState(() {
+        _quantity++;
+        print('Current quantity: $_quantity'); // Debugging line
+      });
     }
   }
 
+  // Decrease quantity
   void _decreaseQuantity() {
     if (_quantity > 0) {
       setState(() => _quantity--);
     }
+  }
+
+  @override
+  void dispose() {
+    _noteController.dispose(); // Dispose the controller
+    super.dispose();
   }
 
   @override
@@ -58,6 +70,21 @@ class _OrderScreenState extends State<OrderScreen> {
               'Footlong',
             ),
             const SizedBox(height: 10),
+            // TextField for custom notes
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40.0),
+              child: TextField(
+                controller: _noteController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Add a note (e.g., "no onions")',
+                ),
+                onChanged: (value) {
+                  setState(() => _note = value);
+                },
+              ),
+            ),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -72,6 +99,10 @@ class _OrderScreenState extends State<OrderScreen> {
                 ),
               ],
             ),
+            const SizedBox(height: 10),
+            // Display the note if not empty
+            if (_note.isNotEmpty)
+              Text('Note: $_note', style: const TextStyle(fontStyle: FontStyle.italic)),
           ],
         ),
       ),
