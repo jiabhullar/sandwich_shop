@@ -32,6 +32,7 @@ class _OrderScreenState extends State<OrderScreen> {
   int _quantity = 0;
   final TextEditingController _noteController = TextEditingController();
   String _currentNote = '';
+  String _selectedSize = 'Footlong';
 
     void _increaseQuantity() {
     if (_quantity < widget.maxQuantity) {
@@ -67,9 +68,28 @@ class _OrderScreenState extends State<OrderScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SegmentedButton<String>(
+              segments: const <ButtonSegment<String>>[
+                ButtonSegment<String>(
+                  value: 'Footlong',
+                  label: Text('Footlong'),
+                ),
+                ButtonSegment<String>(
+                  value: 'Six-inch',
+                  label: Text('Six-inch'),
+                ),
+              ],
+              selected: <String>{_selectedSize},
+              onSelectionChanged: (Set<String> newSelection) {
+                setState(() {
+                  _selectedSize = newSelection.first;
+                });
+              },
+            ),
+            const SizedBox(height: 12),
             OrderItemDisplay(
               _quantity,
-              'Footlong',
+              _selectedSize,
               note: _currentNote,
             ),
             const SizedBox(height: 12),
