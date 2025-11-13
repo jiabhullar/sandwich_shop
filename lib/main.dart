@@ -86,22 +86,31 @@ class _OrderScreenState extends State<OrderScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: _increaseQuantity,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                  ),
-                  child: const Text('Add'),
+            // Add button: disabled if quantity has reached max
+              ElevatedButton(
+                onPressed: _quantity < widget.maxQuantity ? _increaseQuantity : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  disabledBackgroundColor: Colors.grey,
+                  foregroundColor: Colors.white,
+                  disabledForegroundColor: Colors.white,
+                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                ElevatedButton(
-                  onPressed: _decreaseQuantity,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
-                  ),
-                  child: const Text('Remove'),
-                ),// commit message
+                child: const Text('Add'),
+              ),
+              const SizedBox(width: 12),
+              // Remove button: disabled if quantity is zero
+              ElevatedButton(
+                onPressed: _quantity > 0 ? _decreaseQuantity : null, 
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  disabledBackgroundColor: Colors.grey,
+                  foregroundColor: Colors.white,
+                  disabledForegroundColor: Colors.white,
+                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                child: const Text('Remove'),
+              ),
               ],
             ),
           ],
