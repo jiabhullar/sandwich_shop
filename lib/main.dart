@@ -31,6 +31,18 @@ class _OrderScreenState extends State<OrderScreen> {
   // ignore: prefer_final_fields
   int _quantity = 0;
 
+    void _increaseQuantity() {
+    if (_quantity < widget.maxQuantity) {
+      setState(() => _quantity++);
+    }
+  }
+
+  void _decreaseQuantity() {
+    if (_quantity > 0) {
+      setState(() => _quantity--);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
