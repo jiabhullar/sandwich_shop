@@ -11,7 +11,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Sandwich Shop App',
-      home: OrderScreen(maxQuantity: 5),
+      home: OrderScreen(),
     );
   }
 }
@@ -61,13 +61,11 @@ class _OrderScreenState extends State<OrderScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  // ignore: avoid_print
-                  onPressed: () => print('Add button pressed!'),
+                  onPressed: _increaseQuantity,
                   child: const Text('Add'),
                 ),
                 ElevatedButton(
-                  // ignore: avoid_print
-                  onPressed: () => print('Remove button pressed!'),
+                  onPressed: _decreaseQuantity,
                   child: const Text('Remove'),
                 ),
               ],
