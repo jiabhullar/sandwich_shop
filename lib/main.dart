@@ -12,13 +12,12 @@ class App extends StatelessWidget {
     return const MaterialApp(
       title: 'Sandwich Shop App',
       home: OrderScreen(),
-    );
+    ); 
   }
 }
 
 class OrderScreen extends StatefulWidget {
   final int maxQuantity;
-
   const OrderScreen({super.key, this.maxQuantity = 10});
 
   @override
@@ -28,7 +27,6 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  // ignore: prefer_final_fields
   int _quantity = 0;
   final TextEditingController _noteController = TextEditingController();
   String _currentNote = '';
@@ -68,6 +66,7 @@ class _OrderScreenState extends State<OrderScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+
             SegmentedButton<String>(
               segments: const <ButtonSegment<String>>[
                 ButtonSegment<String>(
@@ -106,7 +105,6 @@ class _OrderScreenState extends State<OrderScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-            // Add button: disabled if quantity has reached max
               ElevatedButton(
                 onPressed: _quantity < widget.maxQuantity ? _increaseQuantity : null,
                 style: ElevatedButton.styleFrom(
@@ -119,7 +117,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 child: const Text('Add'),
               ),
               const SizedBox(width: 12),
-              // Remove button: disabled if quantity is zero
+              const SizedBox(height: 100),
               ElevatedButton(
                 onPressed: _quantity > 0 ? _decreaseQuantity : null, 
                 style: ElevatedButton.styleFrom(
