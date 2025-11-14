@@ -66,7 +66,6 @@ class _OrderScreenState extends State<OrderScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
             SegmentedButton<String>(
               segments: const <ButtonSegment<String>>[
                 ButtonSegment<String>(
