@@ -45,7 +45,7 @@ class _OrderScreenState extends State<OrderScreen> {
         await Navigator.push<Map<String, String>>(
       context,
       MaterialPageRoute<Map<String, String>>(
-        builder: (BuildContext context) => const ProfileScreen(),
+        builder: (BuildContext context) => ProfileScreen(),
       ),
     );
 
