@@ -1,37 +1,66 @@
 import 'sandwich.dart';
-
-class CartItem {
-  final Sandwich sandwich;
-  int quantity;
-
-  CartItem({required this.sandwich, this.quantity = 1});
-}
+import 'package:sandwich_shop/repositories/pricing_repository.dart';
 
 class Cart {
-  final List<CartItem> items = [];
+  final Map<Sandwich, int> _items = {};
 
-  void add(Sandwich sandwich) {
-    for (var item in items) {
-      if (item.sandwich.type == sandwich.type &&
-          item.sandwich.isFootlong == sandwich.isFootlong &&
-          item.sandwich.breadType == sandwich.breadType) {
-        item.quantity++;
-        return;
-      }
+  // Returns a read-only copy of the items and their quantities
+  Map<Sandwich, int> get items => Map.unmodifiable(_items);
+
+  void add(Sandwich sandwich, {int quantity = 1}) {
+    if (_items.containsKey(sandwich)) {
+      _items[sandwich] = _items[sandwich]! + quantity;
+    } else {
+      _items[sandwich] = quantity;
     }
-    items.add(CartItem(sandwich: sandwich));
   }
 
-  void remove(CartItem item) {
-    items.remove(item);
+  void remove(Sandwich sandwich, {int quantity = 1}) {
+    if (_items.containsKey(sandwich)) {
+      final currentQty = _items[sandwich]!;
+      if (currentQty > quantity) {
+        _items[sandwich] = currentQty - quantity;
+      } else {
+        _items.remove(sandwich);
+      }
+    }
   }
 
   void clear() {
-    items.clear();
+    _items.clear();
   }
 
-  int get countOfItems => items.fold(0, (sum, item) => sum + item.quantity);
+  double get totalPrice {
+    final pricingRepository = PricingRepository();
+    double total = 0.0;
 
-  double get totalPrice =>
-      items.fold(0.0, (sum, item) => sum + item.quantity * item.sandwich.price);
+    for (Sandwich sandwich in _items.keys) {
+      int quantity = _items[sandwich]!;
+      total += pricingRepository.calculatePrice(
+        quantity: quantity,
+        isFootlong: sandwich.isFootlong,
+      );
+    }
+
+    return total;
+  }
+
+  bool get isEmpty => _items.isEmpty;
+
+  int get length => _items.length;
+
+  int get countOfItems {
+    int total = 0;
+    for (Sandwich sandwich in _items.keys) {
+      total += _items[sandwich]!;
+    }
+    return total;
+  }
+
+  int getQuantity(Sandwich sandwich) {
+    if (_items.containsKey(sandwich)) {
+      return _items[sandwich]!;
+    }
+    return 0;
+  }
 }
