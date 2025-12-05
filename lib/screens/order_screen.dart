@@ -4,8 +4,9 @@ import '../models/sandwich.dart';
 import '../widgets/quantity_selector.dart';
 
 class OrderScreen extends StatefulWidget {
-  final Cart cart;
-  const OrderScreen({super.key, required this.cart});
+  final int maxQuantity;
+
+  const OrderScreen({super.key, this.maxQuantity = 10t});
 
   @override
   State<OrderScreen> createState() => _OrderScreenState();
