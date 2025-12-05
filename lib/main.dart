@@ -3,7 +3,7 @@ import 'models/cart.dart';
 import 'screens/order_screen.dart';
 import 'screens/cart_screen.dart';
 import 'screens/checkout_screen.dart';
-import 'screens/about_screen.dart';
+import 'screens/app_styles.dart';
 
 void main() {
   runApp(const SandwichShopApp());
