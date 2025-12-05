@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:sandwich_shop/views/app_styles.dart';
-import 'package:sandwich_shop/views/cart_screen.dart';
+import 'package:sandwich_shop/screens/app_styles.dart';
+import 'package:sandwich_shop/screens/cart_screen.dart';
 import 'package:sandwich_shop/models/cart.dart';
 import 'package:sandwich_shop/models/sandwich.dart';
-import 'package:sandwich_shop/views/profile_screen.dart';
+import 'package:sandwich_shop/screens/profile_screen.dart';
 
 class OrderScreen extends StatefulWidget {
   final int maxQuantity;

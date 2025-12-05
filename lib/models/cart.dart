@@ -1,5 +1,5 @@
 import 'sandwich.dart';
-import 'package:sandwich_shop/repositories/pricing_repository.dart';
+import 'package:sandwich_shop/models/pricing.dart';
 
 class Cart {
   final Map<Sandwich, int> _items = {};
