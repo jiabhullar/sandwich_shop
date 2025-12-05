@@ -17,10 +17,10 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   final Cart _cart = Cart();
   final TextEditingController _notesController = TextEditingController();
-  
+
   SandwichType _selectedType = SandwichType.veggieDelight;
-  BreadType _selectedBread = BreadType.white;
   bool _isFootlong = false;
+  BreadType _selectedBread = BreadType.white;
   int _quantity = 1;
 
   void _addToCart() {
