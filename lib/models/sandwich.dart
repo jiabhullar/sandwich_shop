@@ -1,6 +1,11 @@
-enum SandwichType { veggieDelight, turkey, ham }
+enum BreadType { white, wheat, wholemeal }
 
-enum BreadType { white, wheat, multigrain }
+enum SandwichType {
+  veggieDelight,
+  chickenTeriyaki,
+  tunaMelt,
+  meatballMarinara,
+}
 
 class Sandwich {
   final SandwichType type;
@@ -14,25 +19,26 @@ class Sandwich {
   });
 
   String get name {
-    String size = isFootlong ? "Footlong" : "Six Inch";
-    String typeName = type.name; // veggieDelight, turkey, ham
-    return "$size ${typeName[0].toUpperCase()}${typeName.substring(1)}";
-  }
-
-  double get price {
     switch (type) {
       case SandwichType.veggieDelight:
-        return isFootlong ? 8.0 : 5.0;
-      case SandwichType.turkey:
-        return isFootlong ? 9.0 : 6.0;
-      case SandwichType.ham:
-        return isFootlong ? 9.5 : 6.5;
+        return 'Veggie Delight';
+      case SandwichType.chickenTeriyaki:
+        return 'Chicken Teriyaki';
+      case SandwichType.tunaMelt:
+        return 'Tuna Melt';
+      case SandwichType.meatballMarinara:
+        return 'Meatball Marinara';
     }
   }
 
   String get image {
-    String typeName = type.name;
-    String size = isFootlong ? "footlong" : "six_inch";
-    return "assets/images/${typeName}_${size}.png";
+    String typeString = type.name;
+    String sizeString = '';
+    if (isFootlong) {
+      sizeString = 'footlong';
+    } else {
+      sizeString = 'six_inch';
+    }
+    return 'assets/images/${typeString}_$sizeString.png';
   }
 }
