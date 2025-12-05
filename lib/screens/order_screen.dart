@@ -23,11 +23,13 @@ class _OrderScreenState extends State<OrderScreen> {
   BreadType _selectedBread = BreadType.white;
   int _quantity = 1;
 
-  void _addToCart() {
-    for (int i = 0; i < _quantity; i++) {
-      widget.cart.add(Sandwich(
-          type: _selectedType, isFootlong: _isFootlong, breadType: _selectedBread));
-    }
+  @override
+  void initState() {
+    super.initState();
+    _notesController.addListener(() {
+      setState(() {});
+    });
+  }
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Added to cart!')),
     );
