@@ -1,7 +1,10 @@
+
 import 'package:flutter/material.dart';
-import '../models/cart.dart';
-import '../models/sandwich.dart';
-import '../widgets/quantity_selector.dart';
+import 'package:sandwich_shop/views/app_styles.dart';
+import 'package:sandwich_shop/views/cart_screen.dart';
+import 'package:sandwich_shop/models/cart.dart';
+import 'package:sandwich_shop/models/sandwich.dart';
+import 'package:sandwich_shop/views/profile_screen.dart';
 
 class OrderScreen extends StatefulWidget {
   final int maxQuantity;
@@ -10,7 +13,7 @@ class OrderScreen extends StatefulWidget {
 
   @override
   State<OrderScreen> createState() {
-  return _OrderScreenState();
+    return _OrderScreenState();
   }
 }
 
@@ -18,9 +21,9 @@ class _OrderScreenState extends State<OrderScreen> {
   final Cart _cart = Cart();
   final TextEditingController _notesController = TextEditingController();
 
-  SandwichType _selectedType = SandwichType.veggieDelight;
-  bool _isFootlong = false;
-  BreadType _selectedBread = BreadType.white;
+  SandwichType _selectedSandwichType = SandwichType.veggieDelight;
+  bool _isFootlong = true;
+  BreadType _selectedBreadType = BreadType.white;
   int _quantity = 1;
 
   @override
@@ -30,7 +33,8 @@ class _OrderScreenState extends State<OrderScreen> {
       setState(() {});
     });
   }
-    @override
+
+  @override
   void dispose() {
     _notesController.dispose();
     super.dispose();
@@ -65,7 +69,6 @@ class _OrderScreenState extends State<OrderScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(welcomeSnackBar);
   }
-
 
   void _addToCart() {
     if (_quantity > 0) {
