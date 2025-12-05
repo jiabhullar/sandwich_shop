@@ -6,10 +6,12 @@ import '../widgets/quantity_selector.dart';
 class OrderScreen extends StatefulWidget {
   final int maxQuantity;
 
-  const OrderScreen({super.key, this.maxQuantity = 10t});
+  const OrderScreen({super.key, this.maxQuantity = 10});
 
   @override
-  State<OrderScreen> createState() => _OrderScreenState();
+  State<OrderScreen> createState() {
+  return _OrderScreenState();
+  }
 }
 
 class _OrderScreenState extends State<OrderScreen> {
