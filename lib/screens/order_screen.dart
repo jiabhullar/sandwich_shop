@@ -312,6 +312,12 @@ class StyledButton extends StatelessWidget {
           Icon(icon),
           const SizedBox(width: 8),
           Text(label),
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, ProfileScreen.routeName);
+            },
+            child: Text('Go to Profile'),
+          )
         ],
       ),
     );
