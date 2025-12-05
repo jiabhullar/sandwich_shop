@@ -67,86 +67,249 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
 
+  void _addToCart() {
+    if (_quantity > 0) {
+      final Sandwich sandwich = Sandwich(
+        type: _selectedSandwichType,
+        isFootlong: _isFootlong,
+        breadType: _selectedBreadType,
+      );
+
+      setState(() {
+        _cart.add(sandwich, quantity: _quantity);
+      });
+
+      String sizeText;
+      if (_isFootlong) {
+        sizeText = 'footlong';
+      } else {
+        sizeText = 'six-inch';
+      }
+      String confirmationMessage =
+          'Added $_quantity $sizeText ${sandwich.name} sandwich(es) on ${_selectedBreadType.name} bread to cart';
+
+      ScaffoldMessengerState scaffoldMessenger = ScaffoldMessenger.of(context);
+      SnackBar snackBar = SnackBar(
+        content: Text(confirmationMessage),
+        duration: const Duration(seconds: 2),
+      );
+      scaffoldMessenger.showSnackBar(snackBar);
+    }
+  }
+
+  VoidCallback? _getAddToCartCallback() {
+    if (_quantity > 0) {
+      return _addToCart;
+    }
+    return null;
+  }
+
+  void _navigateToCartView() {
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => CartScreen(cart: _cart),
+      ),
+    );
+  }
+
+  List<DropdownMenuEntry<SandwichType>> _buildSandwichTypeEntries() {
+    List<DropdownMenuEntry<SandwichType>> entries = [];
+    for (SandwichType type in SandwichType.values) {
+      Sandwich sandwich =
+          Sandwich(type: type, isFootlong: true, breadType: BreadType.white);
+      DropdownMenuEntry<SandwichType> entry = DropdownMenuEntry<SandwichType>(
+        value: type,
+        label: sandwich.name,
+      );
+      entries.add(entry);
+    }
+    return entries;
+  }
+
+  List<DropdownMenuEntry<BreadType>> _buildBreadTypeEntries() {
+    List<DropdownMenuEntry<BreadType>> entries = [];
+    for (BreadType bread in BreadType.values) {
+      DropdownMenuEntry<BreadType> entry = DropdownMenuEntry<BreadType>(
+        value: bread,
+        label: bread.name,
+      );
+      entries.add(entry);
+    }
+    return entries;
+  }
+
+  String _getCurrentImagePath() {
+    final Sandwich sandwich = Sandwich(
+      type: _selectedSandwichType,
+      isFootlong: _isFootlong,
+      breadType: _selectedBreadType,
+    );
+    return sandwich.image;
+  }
+
   @override
   Widget build(BuildContext context) {
-    Sandwich currentSandwich = Sandwich(
-      type: _selectedType,
-      isFootlong: _isFootlong,
-      breadType: _selectedBread,
-    );
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Order Sandwich'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CartScreen(cart: widget.cart)));
-            },
-          )
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Image.asset(currentSandwich.image, height: 150),
-            const SizedBox(height: 20),
-            DropdownButton<SandwichType>(
-              value: _selectedType,
-              items: SandwichType.values
-                  .map((e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(e.name),
-                      ))
-                  .toList(),
-              onChanged: (val) {
-                setState(() {
-                  _selectedType = val!;
-                });
-              },
-            ),
-            DropdownButton<BreadType>(
-              value: _selectedBread,
-              items: BreadType.values
-                  .map((e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(e.name),
-                      ))
-                  .toList(),
-              onChanged: (val) {
-                setState(() {
-                  _selectedBread = val!;
-                });
-              },
-            ),
-            SwitchListTile(
-              title: const Text('Footlong'),
-              value: _isFootlong,
-              onChanged: (val) {
-                setState(() {
-                  _isFootlong = val;
-                });
-              },
-            ),
-            QuantitySelector(
-              quantity: _quantity,
-              onIncrement: () => setState(() => _quantity++),
-              onDecrement: () {
-                if (_quantity > 1) setState(() => _quantity--);
-              },
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _addToCart,
-              child: const Text('Add to Cart'),
-            ),
-          ],
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(
+            height: 100,
+            child: Image.asset('assets/images/logo.png'),
+          ),
         ),
+        title: const Text(
+          'Sandwich Counter',
+          style: heading1,
+        ),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: 300,
+                child: Image.asset(
+                  _getCurrentImagePath(),
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Center(
+                      child: Text(
+                        'Image not found',
+                        style: normalText,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
+              DropdownMenu<SandwichType>(
+                width: double.infinity,
+                label: const Text('Sandwich Type'),
+                textStyle: normalText,
+                initialSelection: _selectedSandwichType,
+                onSelected: (SandwichType? value) {
+                  if (value != null) {
+                    setState(() => _selectedSandwichType = value);
+                  }
+                },
+                dropdownMenuEntries: _buildSandwichTypeEntries(),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Six-inch', style: normalText),
+                  Switch(
+                    value: _isFootlong,
+                    onChanged: (value) => setState(() => _isFootlong = value),
+                  ),
+                  const Text('Footlong', style: normalText),
+                ],
+              ),
+              const SizedBox(height: 20),
+              DropdownMenu<BreadType>(
+                width: double.infinity,
+                label: const Text('Bread Type'),
+                textStyle: normalText,
+                initialSelection: _selectedBreadType,
+                onSelected: (BreadType? value) {
+                  if (value != null) {
+                    setState(() => _selectedBreadType = value);
+                  }
+                },
+                dropdownMenuEntries: _buildBreadTypeEntries(),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Quantity: ', style: normalText),
+                  IconButton(
+                    onPressed: _quantity > 0
+                        ? () => setState(() => _quantity--)
+                        : null,
+                    icon: const Icon(Icons.remove),
+                  ),
+                  Text('$_quantity', style: heading2),
+                  IconButton(
+                    onPressed: () => setState(() => _quantity++),
+                    icon: const Icon(Icons.add),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              StyledButton(
+                onPressed: _getAddToCartCallback(),
+                icon: Icons.add_shopping_cart,
+                label: 'Add to Cart',
+                backgroundColor: Colors.green,
+              ),
+              const SizedBox(height: 20),
+              StyledButton(
+                onPressed: _navigateToCartView,
+                icon: Icons.shopping_cart,
+                label: 'View Cart',
+                backgroundColor: Colors.blue,
+              ),
+              const SizedBox(height: 20),
+              StyledButton(
+                onPressed: _navigateToProfile,
+                icon: Icons.person,
+                label: 'Profile',
+                backgroundColor: Colors.purple,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Cart: ${_cart.countOfItems} items - £${_cart.totalPrice.toStringAsFixed(2)}',
+                style: normalText,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class StyledButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+
+  final IconData icon;
+
+  final String label;
+
+  final Color backgroundColor;
+
+  const StyledButton({
+    super.key,
+    required this.onPressed,
+    required this.icon,
+    required this.label,
+    required this.backgroundColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    ButtonStyle myButtonStyle = ElevatedButton.styleFrom(
+      backgroundColor: backgroundColor,
+      foregroundColor: Colors.white,
+      textStyle: normalText,
+    );
+
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: myButtonStyle,
+      child: Row(
+        children: [
+          Icon(icon),
+          const SizedBox(width: 8),
+          Text(label),
+        ],
       ),
     );
   }
