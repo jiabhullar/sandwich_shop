@@ -30,10 +30,12 @@ class _OrderScreenState extends State<OrderScreen> {
       setState(() {});
     });
   }
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Added to cart!')),
-    );
+    @override
+  void dispose() {
+    _notesController.dispose();
+    super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
